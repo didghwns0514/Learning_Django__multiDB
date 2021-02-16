@@ -3,3 +3,4 @@
 /__pycache__/
 __pycache__
 /dJango_conf/h__CONF.py
+*__init__.py
