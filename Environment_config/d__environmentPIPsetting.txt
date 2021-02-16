@@ -1,0 +1,3 @@
+https://stackoverflow.com/questions/8793877/how-to-copy-modules-from-one-virtualenv-to-another
+Python 3.6.2
+
