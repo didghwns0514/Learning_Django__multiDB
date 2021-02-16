@@ -2,3 +2,4 @@
 *.pyc
 /__pycache__/
 __pycache__
+/dJango_conf/h__CONF.py
