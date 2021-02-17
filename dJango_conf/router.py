@@ -6,8 +6,8 @@ class MultiDBRouter(object):
 	auth and contenttypes applications.
 	"""
 	route_app_labels = _APP_SET
-	route_app_label_readwrite = _APP_SET_READWRITE
-	route_app_label_writeonly = _APP_SET_WRITEONLY
+	route_app_label_readwrite = _APP_SET_READWRITE # storeapp
+	route_app_label_writeonly = _APP_SET_WRITEONLY # collectapp
 
 	def db_for_read(self, model, **hints):
 		"""
@@ -24,7 +24,7 @@ class MultiDBRouter(object):
 		if model._meta.app_label in self.route_app_labels:
 			if model._meta.app_label in self.route_app_label_writeonly:
 				return 'db_collect'
-			else:
+			elif model._meta.app_label in self.route_app_label_readwrite:
 				return 'db_store'
 		return None
 
@@ -45,9 +45,34 @@ class MultiDBRouter(object):
 		Make sure the auth and contenttypes apps only appear in the
 		'auth_db' database.
 		"""
+		# print(f'app_label : {app_label}')
+		# print(f'db : {db}')
+
+		# if app_label in self.route_app_labels:
+		# 	# if app_label in self.route_app_label_readwrite:
+		# 	# 	return db == 'db_store'
+		# 	# elif db == 'default': # db diction 1 lv key 명칭인듯
+		# 	# 	return True
+		#
+		# 	if app_label in self.route_app_label_writeonly:
+		# 		return db == 'db_collect'
+		#
+		# 	elif app_label in self.route_app_label_readwrite:
+		# 		return db == 'db_store'
+		#
+		# 	elif db == 'default' or db == 'db_store': # db diction 1 lv key 명칭인듯
+		# 		return True
+		# return None
+
+
+		# if app_label in self.route_app_label_writeonly:
+		# 	return False
+		# return True
 		if app_label in self.route_app_labels:
 			if app_label in self.route_app_label_readwrite:
 				return db == 'db_store'
-			elif db == 'default': # db diction 1 lv key 명칭인듯
+		else: # default db
+			if db == 'default':
 				return True
+
 		return None

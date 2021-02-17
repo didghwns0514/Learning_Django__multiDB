@@ -2,11 +2,12 @@ from django.db import models
 
 import datetime
 from StoreScript.Configuration.Base.cnfclass import DBcnf, Order
-from config.settings import BASE_DIR, DATABASES
+from django.contrib.auth.models import User
 from django.utils import timezone
 
 # Create your models here.
 class AddOrder(models.Model):
+
 	order_store_key = models.CharField(max_length=DBcnf.maxCharLen)
 	order_title = models.CharField(max_length=DBcnf.maxCharLen) # 길이제한 있는 문자열 / textfield() 객체 다수 사용시 성능저하
 	order_number = models.IntegerField(default=DBcnf.orderNumber)
@@ -32,9 +33,9 @@ class AddOrder(models.Model):
 	def recent_orders(self):
 		return self.order_updated_time >= timezone.now() - datetime.timedelta(days=1)
 
-	class Meta:
-		#app_label = BASE_DIR / 'db.sqlite3'
-		app_label = 'storeapp'
+	# class Meta:
+	# 	#app_label = BASE_DIR / 'db.sqlite3'
+	# 	app_label = 'storeapp'
 
 
 class RobotState(models.Model):
@@ -51,14 +52,13 @@ class RobotState(models.Model):
 						 self.robot_updated_time
 						 )
 
-	class Meta:
-		#app_label = BASE_DIR / 'db.sqlite3'
-		app_label = 'storeapp'
+	# class Meta:
+	# 	#app_label = BASE_DIR / 'db.sqlite3'
+	# 	app_label = 'storeapp'
 
 
-class UpdateMySQL(models.Model):
-	pass
 
 
-	class Meta:
-		app_label = 'collectapp'
+
+	# class Meta:
+	# 	app_label = 'collectapp'
