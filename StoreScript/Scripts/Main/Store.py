@@ -1,6 +1,6 @@
 """
     My Module_
-    ~~~~~~~~~
+    ~~~~~~~~~~~
 """
 
 class Test(object):
