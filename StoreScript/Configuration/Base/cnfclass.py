@@ -19,7 +19,7 @@ class DBcnf:
     orderStateIndex = int(1)
     robotStateIndex = int(1)
     
-class _Sqlite(Enum):
+class cSqlite: # Enum
     """
     sqlite 관련 부분
     >>> 참조:
@@ -28,17 +28,18 @@ class _Sqlite(Enum):
     """
     table_create = "CREATE TABLE IF NOT EXISTS " #tbl name
     table_destroy = "DROP TABLE IF EXISTS " #tbl name
+    table_search = "SELECT * FROM "
     table_add = "INSERT INTO "
 
     table_auth_col = "(id integer PRIMARY KEY, username VARCHAR UNIQUE, hashed_password VARCHAR, email text)"
     table_store_col = "(storekey VARCHAR UNIQUE,  )"
     auth_col_dict = {
-                    1:"(id, username, hashed_password, email)",
-                    2:"(?, ?)"
+                        1:"(username, hashed_password, email)",
+                        2:"(?, ?, ?)"
                     }
     store_col_dict = {
-                    1:"(storekey)",
-                     2:"(>,)"
+                         1:"(storekey)",
+                         2:"(?,)"
                     }
 
     table_auth_name = "auth"
@@ -48,42 +49,53 @@ class _Sqlite(Enum):
 
 
     @staticmethod
-    def _chose_op(_type:str, action:tuple, uniqkey:str=None)->str:
+    def _choose_op(_type:str, action:tuple, uniqkey:str=None, queryLi:list=None)->str:
         """
         choosing operation in _Sqlite
         :param _type: type of db using
         :param action: action in tuple
         :param uniqkey: key used to identify the store
+        :param queryLi: list of items to search as query
         :return: string type of sql query
         """
         # local values used
         table_name, table_col, column_dict = None, None, None
 
         if _type == 'db_auth':
-            table_name = _Sqlite.table_auth_name
-            table_col = _Sqlite.table_auth_col
-            column_dict = _Sqlite.auth_col_tup
+            table_name = cSqlite.table_auth_name
+            table_col = cSqlite.table_auth_col
+            column_dict = cSqlite.auth_col_dict
 
         elif _type == 'db_store':
-            assert uniqkey != None
-            table_name = _Sqlite.table_store_name
-            table_col = _Sqlite.table_store_col
-            column_dict = _Sqlite.store_col_tup
+            #assert uniqkey != None
+            table_name = cSqlite.table_store_name
+            table_col = cSqlite.table_store_col
+            column_dict = cSqlite.table_store_name
 
+        else:
+            raise ValueError('wrong db type chosen')
 
         if action == ('create', 'table'):
-            return _Sqlite.table_create + table_name + table_col
+            return cSqlite.table_create + table_name + table_col
 
         elif action == ('destory', 'table'):
-            return _Sqlite.table_destroy + table_name
+            return cSqlite.table_destroy + table_name
 
         elif action == ('add', 'table'):
-            return _Sqlite.table_add + table_name + ' ' + column_tuple + ' ' + \
-                    'VALUES'
+            return cSqlite.table_add + table_name + ' ' + column_dict[1] + ' ' + \
+                    'VALUES' + ' ' + column_dict[2]
+
+        elif action == ('check', 'table'):
+            assert queryLi != None
+            conv = ' AND '.join(list(map(lambda x: x + ' = ?' ,queryLi)))
+            return cSqlite.table_search + table_name + ' ' + 'WHERE' + ' ' + conv
+
+        else:
+            raise ValueError('wrong action input')
 
 
 
-class _Flask:
+class cFlask:
     """
     flask 로그인 체크 여부
     """

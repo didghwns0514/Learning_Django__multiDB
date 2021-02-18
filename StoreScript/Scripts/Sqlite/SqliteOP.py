@@ -5,21 +5,7 @@
 import sqlite3
 import os
 from StoreScript.Configuration.Base.fileloc_class import Fileloc
-from StoreScript.Configuration.Base.cnfclass import _Sqlite
-
-
-
-	pass
-	mydb = mc.connect(
-		host="localhost",
-		user="root",
-		password="",
-		database="pythondb"
-
-	)
-	mycursor = mydb.cursor()
-	mycursor.execute("SELECT email,password from users where email like '"+email + "'and password like '"+password+"'")
-	result = mycursor.fetchone()
+from StoreScript.Configuration.Base.cnfclass import cSqlite
 
 
 class Sqlite(object):
@@ -70,7 +56,7 @@ class Sqlite(object):
 
 
 		with sqlite3.connect(Sqlite._get_fileloc(_type),
-							 isolation_level=_Sqlite.isolation_lv.value)\
+							 isolation_level=cSqlite.isolation_lv.value)\
 				as conn:
 
 			# cursor variable

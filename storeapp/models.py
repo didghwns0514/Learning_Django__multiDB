@@ -33,9 +33,9 @@ class AddOrder(models.Model):
 	def recent_orders(self):
 		return self.order_updated_time >= timezone.now() - datetime.timedelta(days=1)
 
-	# class Meta:
-	# 	#app_label = BASE_DIR / 'db.sqlite3'
-	# 	app_label = 'storeapp'
+	class Meta:
+		#app_label = BASE_DIR / 'db.sqlite3'
+		app_label = 'storeapp'
 
 
 class RobotState(models.Model):
@@ -52,9 +52,9 @@ class RobotState(models.Model):
 						 self.robot_updated_time
 						 )
 
-	# class Meta:
-	# 	#app_label = BASE_DIR / 'db.sqlite3'
-	# 	app_label = 'storeapp'
+	class Meta:
+		#app_label = BASE_DIR / 'db.sqlite3'
+		app_label = 'storeapp'
 
 
 

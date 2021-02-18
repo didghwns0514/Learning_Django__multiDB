@@ -7,13 +7,13 @@ from oauth2client.contrib.flask_util import UserOAuth2
 from flask import Flask
 from StoreScript.Scripts.Sqlite.SqliteOP import SQlite
 from StoreScript.Configuration.Base.fileloc_class import Fileloc
-from StoreScript.Configuration.Base.cnfclass import _Flask
+from StoreScript.Configuration.Base.cnfclass import cFlask
 
 class clsFlask:
 
 	APP = Flask(__name__)
 	OAUTH2 = None
-	LOGGED = False if _Flask.Option == True else True
+	LOGGED = False if cFlask.Option == True else True
 
 	def __init__(self): pass
 
