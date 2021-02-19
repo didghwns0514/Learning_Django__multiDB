@@ -30,3 +30,30 @@ class threadTask(threading.Thread):
 				pass
 			finally:
 				pass
+
+
+class threadAsync(threading.Thread):
+	"""single thread to run asyncio functions"""
+
+	def __init__(self, event_loop, main_async, theWindow):
+		"""
+
+		:param event_loop: event loop from main of the program
+		:param main_async: aync loop in Tk level
+		:param theWindow: Tk class
+		:return: -
+		"""
+
+		# inherit vars
+		self.theWindow = theWindow
+		self.loop = event_loop
+		self.main_async_f = main_async
+
+
+		# parent class init : py2 compatible
+		super(threadAsync, self).__init__()
+
+
+	def run(self):
+		"""running thread using class method"""
+		self.loop.run_until_complete(self.main_async_f())

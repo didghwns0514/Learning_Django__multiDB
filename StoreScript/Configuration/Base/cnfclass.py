@@ -4,11 +4,7 @@
 """
 from enum import Enum
 
-class Order:
-    """
-    주문 기본값 선언 부분
-    """
-    pass
+
 
 class DBcnf:
     """
@@ -22,8 +18,8 @@ class DBcnf:
 class cSqlite: # Enum
     """
     sqlite 관련 부분
-    >>> 참조:
-        http://hleecaster.com/python-sqlite3/
+    참조:
+        >>> http://hleecaster.com/python-sqlite3/
 
     """
     table_create = "CREATE TABLE IF NOT EXISTS " #tbl name
