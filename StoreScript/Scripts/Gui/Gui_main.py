@@ -1,37 +1,79 @@
-import sys
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui     import *
-from PyQt5.QtCore    import *
+"""
+	GUI main
+	~~~~~~~~~
+"""
+import tkinter as tk
+import time
+import threading
+from thread_task import *
+from Gui_sub_functions import *
+from queue import Queue
 
-from mainwindow_ui import Ui_MainWindow
-from dialog_ui     import Ui_Dialog
 
-class MyDialog(QDialog):
+class Gui(tk.Tk):
+	"""
+		Gui Main 띄우는 class
+	"""
 	def __init__(self):
-		super().__init__()
-		self.ui = Ui_Dialog()
-		self.ui.setupUi(self)
+		"""class init 부분"""
 
-class MyWindow(QMainWindow):
-	def __init__(self):
-		super().__init__()
-		self.ui = Ui_MainWindow()
-		self.ui.setupUi(self)
+		# parent class init : py2 compatible
+		super(Gui, self).__init__() # tkinter.Tk.__init__()
 
-		centralWidget = QWidget()
-		self.setCentralWidget(centralWidget)
-		gridLayout = QGridLayout(centralWidget)
-		gridLayout.addWidget(self.ui.label,      0, 0, alignment=Qt.AlignCenter)
-		gridLayout.addWidget(self.ui.pushButton, 1, 0)
+		# set basic GUI params
+		self.geometry("400x400")
 
-	def dialogbox(self):
-		#self.hide()
-		self.myDialog = MyDialog()
-		self.myDialog.show()
+		# import queue
+		self._tkQ = Queue()
+		self._storeQ = Queue()
+
+		# import thread for task
+		#self._tkT = threadTask(self._tkQ) # shares memory of the Q
+
+		# call build method
+		self._build()
+
+
+	def _loadThread(self, function):
+		"""
+
+		:param function: function to execute in thread
+		:return: -
+		"""
+		def wrapper():
+			self._tkQ.put(function)
+			threadTask(self._tkQ).start()
+
+		return wrapper
+
+		#self._tkT.start()
+
+
+
+	def _build(self):
+		"""call other build functions for Tk"""
+
+		# create button
+		self._build_button()
+
+	def _build_button(self):
+		"""function to build button
+
+		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		important to match text and callback functions
+		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		"""
+
+		# set callback and pack it to tk
+		tk.Button(self, text="click me", command=self._loadThread(self.__f_add_order)).pack()
+
+
+	def __f_add_order(self):
+		print(f'reached add order!')
+		self._storeQ.put('order')
+		print(f'check qsize in order! : {self._storeQ.qsize()}')
 
 
 if __name__ == '__main__':
-	app = QApplication(sys.argv)
-	w = MyWindow()
-	w.show()
-	sys.exit(app.exec_())
+	root = Gui()
+	root.mainloop()

@@ -1,13 +1,15 @@
 from django.db import models
 
 import datetime
+import time
 from StoreScript.Configuration.Base.cnfclass import DBcnf, Order
 from django.contrib.auth.models import User
 from django.utils import timezone
 
 # Create your models here.
-class AddOrder(models.Model):
 
+class AddOrder(models.Model):
+	print(f'AddOrder datetime.datetime.now() : {datetime.datetime.now()}')
 	order_store_key = models.CharField(max_length=DBcnf.maxCharLen)
 	order_title = models.CharField(max_length=DBcnf.maxCharLen) # 길이제한 있는 문자열 / textfield() 객체 다수 사용시 성능저하
 	order_number = models.IntegerField(default=DBcnf.orderNumber)
@@ -39,6 +41,7 @@ class AddOrder(models.Model):
 
 
 class RobotState(models.Model):
+	print(f'RobotState datetime.datetime.now() : {datetime.datetime.now()}')
 	robot_key = models.CharField(max_length=DBcnf.maxCharLen)
 	robot_state_index = models.IntegerField(default=DBcnf.robotStateIndex)
 	robot_updated_time = models.DateTimeField(auto_now=True)

@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import AddOrder
 from datetime import datetime
+import time
 
 def index(request):
 	"""
@@ -22,3 +23,9 @@ def index(request):
 		else sum([ ob.order_number for ob in todaySales_list ])
 
 	return HttpResponse(tmp_sum)
+
+
+def check_runs(request):
+	while True:
+		time.sleep(1)
+		print(f'views check_runs : {datetime.now()}')
